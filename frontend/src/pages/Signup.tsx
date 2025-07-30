@@ -10,8 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import { Mail, Lock, User, Phone, Shield, ArrowRight, Home, CheckCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { API } from "@/lib/api";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -29,39 +32,76 @@ const Signup = () => {
     }));
   };
 
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: "Password mismatch",
-        description: "Passwords do not match. Please try again.",
-        variant: "destructive"
-      });
-      return;
-    }
+  // 👇 ADD just these two helpers at the top of the component file (after imports)
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5000/api";
 
-    if (!formData.agreeToTerms || !formData.agreeToPrivacy) {
-      toast({
-        title: "Agreement required",
-        description: "Please agree to the terms and privacy policy to continue.",
-        variant: "destructive"
-      });
-      return;
-    }
+async function request<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.msg || "Request failed");
+  return data as T;
+}
+
+// ⬇️  REPLACE ONLY THESE TWO FUNCTIONS  ───────────────────────────
+const handleSignup = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  // front-end validations unchanged
+  if (formData.password !== formData.confirmPassword) {
+    toast({
+      title: "Password mismatch",
+      description: "Passwords do not match. Please try again.",
+      variant: "destructive"
+    });
+    return;
+  }
+
+  if (!formData.agreeToTerms || !formData.agreeToPrivacy) {
+    toast({
+      title: "Agreement required",
+      description: "Please agree to the terms and privacy policy to continue.",
+      variant: "destructive"
+    });
+    return;
+  }
+
+  try {
+    /* ↳ CALL THE EXPRESS API */
+    type Resp = { token: string; name: string; email: string; _id: string };
+    const data = await request<Resp>("/auth/register", {
+      name: formData.email.split("@")[0],  // until you add a Name field
+      email: formData.email,
+      password: formData.password
+    });
+
+    localStorage.setItem("token", data.token);
 
     toast({
       title: "Account created successfully! 🎉",
-      description: "Your anonymous ID: Anon_2847. Redirecting to voice onboarding...",
+      description: "Redirecting to dashboard…"
     });
-  };
 
-  const handleGoogleSignup = () => {
+    // if you use react-router's useNavigate, redirect here:
+    // navigate("/dashboard");
+  } catch (err: any) {
     toast({
-      title: "Google Signup",
-      description: "Google authentication would be integrated here.",
+      title: "Signup failed",
+      description: err.message,
+      variant: "destructive"
     });
-  };
+  }
+};
+
+const handleGoogleSignup = () => {
+  toast({
+    title: "Google Signup",
+    description: "Google OAuth not wired yet – coming soon!"
+  });
+};
 
   const signupBenefits = [
     "Get your unique anonymous ID",

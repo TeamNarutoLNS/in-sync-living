@@ -8,28 +8,73 @@ import { Separator } from "@/components/ui/separator";
 import Navbar from "@/components/Navbar";
 import { Mail, Lock, ArrowRight, Home } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { API } from "@/lib/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulate login
-    toast({
-      title: "Welcome back!",
-      description: "Redirecting to your dashboard...",
-    });
-    // In a real app, this would redirect to /dashboard
-  };
+  /* ───────────────────────────────────────────────
+   helper: POST to <backend>/api/<path>
+   (Put these two lines near the top, after imports)
+──────────────────────────────────────────────── */
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5000/api";
 
-  const handleGoogleLogin = () => {
+async function request<T>(path: string, body: unknown): Promise<T> {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.msg || "Request failed");
+  return data as T;
+}
+
+/* ───────────────────────────────────────────────
+   UPDATED HANDLERS
+──────────────────────────────────────────────── */
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    /* 1️⃣  hit the Express login endpoint */
+    type Resp = { token: string; name: string; email: string };
+    const data = await request<Resp>("/auth/login", { email, password });
+
+    /* 2️⃣  persist JWT so subsequent requests can include it */
+    localStorage.setItem("token", data.token);
+
+    /* 3️⃣  user feedback + redirect */
     toast({
-      title: "Google Login",
-      description: "Google authentication would be integrated here.",
+      title: `Welcome back, ${data.name}!`,
+      description: "Redirecting to your dashboard…"
     });
-  };
+
+    // if you already use react-router’s useNavigate:
+    // navigate("/dashboard");
+  } catch (err: any) {
+    toast({
+      title: "Login failed",
+      description: err.message,
+      variant: "destructive"
+    });
+  }
+};
+
+const handleGoogleLogin = () => {
+  toast({
+    title: "Google Login",
+    description: "Google OAuth not wired yet – coming soon!"
+  });
+};
+
 
   return (
     <div className="min-h-screen bg-hero-gradient">

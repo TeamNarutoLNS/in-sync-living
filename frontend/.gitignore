@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+C:\Programming\RoomMate Matching\in-sync-living\frontend\.env
+C:\Programming\RoomMate Matching\in-sync-living\backend\.env
+C:\Programming\RoomMate Matching\in-sync-living\backend\node_modules
 
 # Editor directories and files
 .vscode/*
