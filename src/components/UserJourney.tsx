@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, UserPlus, Mic, Users, MessageCircle, Heart } from "lucide-react";
@@ -98,11 +99,13 @@ const UserJourney = () => {
               Join thousands of students who found their ideal living situation through InTune.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Button variant="hero" size="lg" className="text-lg px-8 py-4">
-              Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </CardContent>
+            <CardContent>
+              <Link to="/signup">
+                <Button variant="hero" size="lg" className="text-lg px-8 py-4">
+                  Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+            </CardContent>
         </Card>
       </div>
     </section>

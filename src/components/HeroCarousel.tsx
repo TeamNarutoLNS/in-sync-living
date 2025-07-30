@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import heroVoiceMatch from "@/assets/hero-voicematch.jpg";
@@ -90,13 +91,15 @@ const HeroCarousel = () => {
               <p className="text-xl md:text-2xl mb-8 text-white/90 animate-fade-in">
                 {slide.subtitle}
               </p>
-              <Button
-                variant="hero"
-                size="lg"
-                className="text-lg px-8 py-4 animate-fade-in"
-              >
-                {slide.cta}
-              </Button>
+              <Link to="/signup">
+                <Button
+                  variant="hero"
+                  size="lg"
+                  className="text-lg px-8 py-4 animate-fade-in"
+                >
+                  {slide.cta}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
