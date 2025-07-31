@@ -24,6 +24,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5000/api
 
 async function request<T>(path: string, body: unknown): Promise<T> {
   const token = localStorage.getItem("token");
+
   const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: {
@@ -50,6 +51,7 @@ const handleLogin = async (e: React.FormEvent) => {
 
     /* 2️⃣  persist JWT so subsequent requests can include it */
     localStorage.setItem("token", data.token);
+    // setUser({ _id: data._id, name: data.name, email: data.email, anonymousId: data.anonymousId });
 
     /* 3️⃣  user feedback + redirect */
     toast({

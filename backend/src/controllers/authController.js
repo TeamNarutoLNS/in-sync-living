@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import generateAnon from '../utils/generateAnon.js';
 
 const genToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
@@ -13,7 +14,12 @@ export const registerUser = async (req, res) => {
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ msg: 'Email already in use' });
 
-    const user = await User.create({ name, email, password });
+    const user = await User.create({
+      name,
+      email,
+      password,
+      anonymousId: generateAnon()
+    });
     res.status(201).json({
       _id: user._id,
       name: user.name,

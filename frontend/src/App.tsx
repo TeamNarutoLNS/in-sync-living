@@ -11,6 +11,8 @@ import Signup from "./pages/Signup";
 import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import Voice from "./pages/Voice";
+
 
 const queryClient = new QueryClient();
 
@@ -28,8 +30,10 @@ const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/dashboard" element={<Dashboard />} />
+           <Route path="/voice" element={<Voice />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
