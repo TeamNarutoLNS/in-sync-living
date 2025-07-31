@@ -1,1 +1,2 @@
-C:\Programming\RoomMate Matching\in-sync-living\backend\node_modules
+# Ignore all node_modules folders
+node_modules/
