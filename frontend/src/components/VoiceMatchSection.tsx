@@ -1,15 +1,21 @@
 
+import OmniWidget from "./omniWidget";
 import VoiceMatchCard from "./VoiceMatchCard";
 import { toast } from "@/hooks/use-toast";
 
 const VoiceMatchSection = () => {
   const handleStartChat = (cardType: string) => {
-    // Placeholder for omnidirectional chatbox integration
-    toast({
+    try {
+      
+      toast({
       title: "Voice Match Started",
       description: `Starting ${cardType} voice matching session...`,
     });
     console.log(`Starting chat for: ${cardType}`);
+    } catch (error) {
+      
+    }
+    
   };
 
   return (
@@ -81,7 +87,8 @@ const VoiceMatchSection = () => {
           </div>
         </div>
       </div>
-    </section>
+      <OmniWidget></OmniWidget>
+     </section>
   );
 };
 

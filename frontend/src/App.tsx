@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Voice from "./pages/Voice";
 
+
 const queryClient = new QueryClient();
 
 const App = () => (
