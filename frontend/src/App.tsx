@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Voice from "./pages/Voice";
+import Gallery from "./pages/Gallery";
 
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
            <Route path="/voice" element={<Voice />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
+          <Route path="/roomgallery" element={<Gallery />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         </Routes>
       </BrowserRouter>
