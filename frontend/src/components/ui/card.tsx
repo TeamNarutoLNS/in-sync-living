@@ -8,8 +8,8 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      // Card container with stronger hover animation
-      "rounded-xl border bg-white text-gray-800 shadow-md transition-transform duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-2xl",
+      // Card with brownish hover glow and soft elevation
+      "rounded-xl border border-transparent bg-white text-gray-800 shadow-md transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-xl hover:border-[#a67c52]/60 hover:bg-gradient-to-br hover:from-[#f8f1e9] hover:to-[#e8ded1]",
       className
     )}
     {...props}
