@@ -94,24 +94,34 @@ const Contact = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="py-16 bg-hero-gradient">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Link 
-            to="/" 
-            className="inline-flex items-center text-primary hover:text-primary/80 mb-6 transition-smooth"
-          >
-            <Home className="w-4 h-4 mr-2" />
-            Back to Home
-          </Link>
-          
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-            Get in Touch
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-            Have questions about InTune? Need help with your account? We're here to help you find your perfect roommate match.
-          </p>
-        </div>
-      </section>
+      {/* Hero Section */}
+<section
+  className="py-24 bg-cover bg-center relative"
+  style={{
+    backgroundImage:
+      "url('https://i.pinimg.com/736x/5e/c2/61/5ec261f6bd99759d307efb8640c12658.jpg')",
+  }}
+>
+  <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-0" />
+
+  <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+    <Link
+      to="/"
+      className="inline-flex items-center text-white hover:text-gray-200 mb-6 transition-smooth"
+    >
+      <Home className="w-4 h-4 mr-2" />
+      Back to Home
+    </Link>
+
+    <h1 className="text-4xl md:text-5xl font-bold mb-6 drop-shadow-lg">
+      Get in Touch
+    </h1>
+    <p className="text-xl mb-8 leading-relaxed drop-shadow-md">
+      Have questions about InTune? Need help with your account? <br />
+      We're here to help you find your perfect roommate match.
+    </p>
+  </div>
+</section>
 
       {/* Contact Info Cards */}
       <section className="py-16 bg-background">
