@@ -8,9 +8,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
-import { Mail, Lock, User, Phone, Shield, ArrowRight, Home, CheckCircle } from "lucide-react";
+import { Mail, Lock, User, Phone, Shield, ArrowRight, Home, CheckCircle, ImageIcon } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import { createWorker } from "tesseract.js"; 
 import { API } from "@/lib/api";
 
 const Signup = () => {
@@ -24,6 +25,8 @@ const Signup = () => {
     agreeToPrivacy: false
   });
   const { toast } = useToast();
+  const [aadhaarFile, setAadhaarFile] = useState<File | null>(null);   // NEW
+  const [ocrLoading, setOcrLoading]   = useState(false);               // NEW
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({
@@ -44,6 +47,23 @@ async function request<T>(path: string, body: unknown): Promise<T> {
   const data = await res.json();
   if (!res.ok) throw new Error(data.msg || "Request failed");
   return data as T;
+}
+
+/* 🧠  OCR: detectGender() ------------------------------------------- */
+async function detectGender(file: File): Promise<"Male" | "Female" | "Unknown"> {
+  const worker = await createWorker("eng", 1, {
+    logger: () => {}                // mute console spam
+  });
+  const {
+    data: { text }
+  } = await worker.recognize(file);
+  await worker.terminate();
+
+  const upper = text.toUpperCase();
+  if (upper.includes("FEMALE")) return "Female";
+  if (upper.includes("MALE")) return "Male";
+  
+  return "Unknown";
 }
 
 // ⬇️  REPLACE ONLY THESE TWO FUNCTIONS  ───────────────────────────
@@ -69,30 +89,82 @@ const handleSignup = async (e: React.FormEvent) => {
       return;
     }
 
+     if (!aadhaarFile) {
+      toast({ title: "Aadhaar image missing", description: "Please upload your Aadhaar JPG before continuing.", variant: "destructive" });
+      return;
+     }
+
+    // try {
+    //   /* ↳ CALL THE EXPRESS API */
+    //   type Resp = { token: string; name: string; email: string; _id: string };
+    //   const data = await request<Resp>("/auth/register", {
+    //     name: formData.email.split("@")[0], // until you add a Name field
+    //     email: formData.email,
+    //     password: formData.password
+    //   });
+
+    //   localStorage.setItem("token", data.token);
+
+    //   toast({
+    //     title: "Account created successfully! 🎉",
+    //     description: "Redirecting to dashboard…"
+    //   });
+
+    //   // ✅ Redirect to home after signup
+    //   navigate("/");
+    // } catch (err: any) {
+    //   toast({
+    //     title: "Signup failed",
+    //     description: err.message,
+    //     variant: "destructive"
+    //   });
+    // }
+
+     try {
+      setOcrLoading(true);
+      const gender = await detectGender(aadhaarFile);
+
+      if (gender === "Male") {
+        toast({
+          title: "Signup blocked 🚫",
+          description: "At the moment InTune is only open to female students.",
+          variant: "destructive"
+        });
+        return;
+      }
+      if (gender === "Unknown") {
+        toast({
+          title: "Couldn’t verify gender",
+          description: "The image was unclear. Please upload a higher-quality photo.",
+          variant: "destructive"
+        });
+        return;
+      }
+    } catch (err) {
+      toast({
+        title: "OCR failed",
+        description: "Could not read the Aadhaar image. Try again or contact support.",
+        variant: "destructive"
+      });
+      return;
+    } finally {
+      setOcrLoading(false);
+    }
+
+    /* ↳ If we’re here gender = Female – continue with your existing API call */
     try {
-      /* ↳ CALL THE EXPRESS API */
       type Resp = { token: string; name: string; email: string; _id: string };
       const data = await request<Resp>("/auth/register", {
-        name: formData.email.split("@")[0], // until you add a Name field
+        name: formData.email.split("@")[0],
         email: formData.email,
         password: formData.password
       });
 
       localStorage.setItem("token", data.token);
-
-      toast({
-        title: "Account created successfully! 🎉",
-        description: "Redirecting to dashboard…"
-      });
-
-      // ✅ Redirect to home after signup
+      toast({ title: "Account created successfully! 🎉", description: "Redirecting to dashboard…" });
       navigate("/");
     } catch (err: any) {
-      toast({
-        title: "Signup failed",
-        description: err.message,
-        variant: "destructive"
-      });
+      toast({ title: "Signup failed", description: err.message, variant: "destructive" });
     }
   };
   
@@ -192,6 +264,26 @@ const handleGoogleSignup = () => {
                         Or create account with email
                       </span>
                     </div>
+                  </div>
+
+                  
+                  {/* ⬇️ New Aadhaar upload field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="aadhaar">Upload Aadhaar JPG</Label>
+                    <div className="relative">
+                      <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        id="aadhaar"
+                        type="file"
+                        accept="image/jpeg,image/png"
+                        onChange={(e) => setAadhaarFile(e.target.files?.[0] ?? null)}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                    {ocrLoading && (
+                      <p className="text-xs text-muted-foreground">Analysing image…</p>
+                    )}
                   </div>
 
                   {/* Email Signup Form */}
