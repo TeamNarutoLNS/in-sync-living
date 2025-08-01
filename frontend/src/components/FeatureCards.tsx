@@ -46,7 +46,7 @@ const features = [
     description:
       "See your compatibility percentage and where you click—or clash! Transparent, animated visuals show the logic behind your match.",
     color: "text-orange-500",
-    path: "/matchmeter",
+    path: "/matches",
   },
   {
     icon: MessageCircle,
