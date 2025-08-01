@@ -48,54 +48,54 @@ async function request<T>(path: string, body: unknown): Promise<T> {
 
 // ⬇️  REPLACE ONLY THESE TWO FUNCTIONS  ───────────────────────────
 const handleSignup = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // front-end validations unchanged
-  if (formData.password !== formData.confirmPassword) {
-    toast({
-      title: "Password mismatch",
-      description: "Passwords do not match. Please try again.",
-      variant: "destructive"
-    });
-    return;
-  }
+    // Front-end validations
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Password mismatch",
+        description: "Passwords do not match. Please try again.",
+        variant: "destructive"
+      });
+      return;
+    }
 
-  if (!formData.agreeToTerms || !formData.agreeToPrivacy) {
-    toast({
-      title: "Agreement required",
-      description: "Please agree to the terms and privacy policy to continue.",
-      variant: "destructive"
-    });
-    return;
-  }
+    if (!formData.agreeToTerms || !formData.agreeToPrivacy) {
+      toast({
+        title: "Agreement required",
+        description: "Please agree to the terms and privacy policy to continue.",
+        variant: "destructive"
+      });
+      return;
+    }
 
-  try {
-    /* ↳ CALL THE EXPRESS API */
-    type Resp = { token: string; name: string; email: string; _id: string };
-    const data = await request<Resp>("/auth/register", {
-      name: formData.email.split("@")[0],  // until you add a Name field
-      email: formData.email,
-      password: formData.password
-    });
+    try {
+      /* ↳ CALL THE EXPRESS API */
+      type Resp = { token: string; name: string; email: string; _id: string };
+      const data = await request<Resp>("/auth/register", {
+        name: formData.email.split("@")[0], // until you add a Name field
+        email: formData.email,
+        password: formData.password
+      });
 
-    localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.token);
 
-    toast({
-      title: "Account created successfully! 🎉",
-      description: "Redirecting to dashboard…"
-    });
+      toast({
+        title: "Account created successfully! 🎉",
+        description: "Redirecting to dashboard…"
+      });
 
-    // if you use react-router's useNavigate, redirect here:
-    // navigate("/dashboard");
-  } catch (err: any) {
-    toast({
-      title: "Signup failed",
-      description: err.message,
-      variant: "destructive"
-    });
-  }
-};
-
+      // ✅ Redirect to home after signup
+      navigate("/");
+    } catch (err: any) {
+      toast({
+        title: "Signup failed",
+        description: err.message,
+        variant: "destructive"
+      });
+    }
+  };
+  
 const handleGoogleSignup = () => {
   toast({
     title: "Google Signup",
