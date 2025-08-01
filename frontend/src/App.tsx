@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Voice from "./pages/Voice";
 import Gallery from "./pages/Gallery";
+import Splits from "./pages/Splits";
 
 
 const queryClient = new QueryClient();
@@ -32,6 +33,8 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/dashboard" element={<Dashboard />} />
            <Route path="/voice" element={<Voice />} />
+          <Route path="/split" element={<Splits />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
           <Route path="/roomgallery" element={<Gallery />} />

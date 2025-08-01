@@ -102,7 +102,7 @@ const features = [
     description:
       "Track every shared expense with ease and zero awkwardness. Keep finances transparent, fair, and drama-free in your space.",
     color: "text-amber-300",
-    path: "/splitmate",
+    path: "/split",
   },
   {
     icon: LayoutDashboard,
