@@ -228,7 +228,7 @@ const ShareMomentSection = () => {
                 </Button>
                 <Button 
                   onClick={handleConsentSubmit}
-                  className="flex-1 bg-warm-brown hover:bg-warm-brown/90"
+                  className="flex-1 bg-warm-brown hover:bg-warm-brown/90 text-[#5f4339]"
                 >
                   Continue
                 </Button>
@@ -274,7 +274,7 @@ const ShareMomentSection = () => {
                 </Button>
                 <Button 
                   onClick={handleStorySubmit}
-                  className="flex-1 bg-warm-brown hover:bg-warm-brown/90"
+                  className="flex-1 bg-warm-brown hover:bg-warm-brown/90 text-[#5f4339]"
                 >
                   Submit Story
                 </Button>

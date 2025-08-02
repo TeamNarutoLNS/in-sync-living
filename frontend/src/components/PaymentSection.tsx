@@ -5,6 +5,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { QrCode, Upload, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/components/ui/use-toast";
+
+const handlePaymentRedirect = () => {
+  toast({
+    title: "Redirecting to Payment App 🔗",
+    description: "Opening your payment app for quick access.",
+  });
+
+  // ✅ This actually triggers UPI app (PhonePe, GPay, etc.)
+  setTimeout(() => {
+    window.location.href =
+      "upi://pay?pa=8770562841@axl&pn=Suhani&am=50&cu=INR";
+  }, 1000);
+};
+
 
 interface PaymentSectionProps {
   balance: number;
@@ -81,6 +96,7 @@ const PaymentSection = ({ balance, roommateId }: PaymentSectionProps) => {
             </p>
             {balanceStatus.action && (
               <Button 
+
                 className="mt-4 shadow-lg"
                 variant={balance < 0 ? "default" : "outline"}
                 onClick={() => {
@@ -152,17 +168,14 @@ const PaymentSection = ({ balance, roommateId }: PaymentSectionProps) => {
                   onChange={(e) => handleFileUpload(e, true)}
                 />
                 {yourQrCode && (
-                  <Button 
-                    className="w-full bg-green-600 hover:bg-green-700 text-white shadow-lg"
-                    onClick={() => {
-                      toast({
-                        title: "Redirecting to Payment App 🔗",
-                        description: "Opening your payment app for quick access.",
-                      });
-                    }}
-                  >
-                    Open Payment App
-                  </Button>
+              <Button
+  className="w-full bg-green-600 hover:bg-green-700 text-white shadow-lg"
+  onClick={handlePaymentRedirect}
+>
+  Open Payment App
+</Button>
+
+
                 )}
               </div>
             </div>
