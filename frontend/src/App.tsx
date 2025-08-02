@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import HowItWorks from "./pages/HowItWorks";
 import Features from "./pages/Features";
@@ -15,7 +15,6 @@ import Voice from "./pages/Voice";
 import Gallery from "./pages/Gallery";
 import Splits from "./pages/Splits";
 import MatchMeter from "./pages/MatchMeter";
-
 
 const queryClient = new QueryClient();
 
@@ -35,9 +34,11 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
            <Route path="/voice" element={<Voice />} />
           <Route path="/split" element={<Splits />} />
+          <Route path="/onboarding" element={<Navigate to="/login" replace />} />
+
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          {/* <Route path="*" element={<NotFound />} /> */}
           <Route path="/roomgallery" element={<Gallery />} />
           <Route path="/matches" element={<MatchMeter />} />
 

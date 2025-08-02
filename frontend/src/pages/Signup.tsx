@@ -361,8 +361,8 @@ const handleGoogleSignup = () => {
                       <div className="flex items-center space-x-2">
                         <Checkbox 
                           id="terms" 
-                          checked={formData.agreeToTerms}
-                          onCheckedChange={(checked) => handleInputChange('agreeToTerms', checked as boolean)}
+                          // checked={formData.agreeToTerms}
+                          // onCheckedChange={(checked) => handleInputChange('agreeToTerms', checked as boolean)}
                         />
                         <label htmlFor="terms" className="text-sm text-muted-foreground">
                           I agree to the{" "}
@@ -380,9 +380,10 @@ const handleGoogleSignup = () => {
                         />
                         <label htmlFor="privacy" className="text-sm text-muted-foreground">
                           I agree to the{" "}
-                          <Link to="/privacy" className="text-primary hover:text-primary/80">
-                            Privacy Policy
-                          </Link>
+                          <span className="text-primary hover:text-primary/80">
+  Privacy Policy
+</span>
+
                         </label>
                       </div>
                     </div>
