@@ -78,7 +78,7 @@ const features = [
     description:
       "Turn your shared space into a vibe with AI-powered decor ideas. From cozy corners to aesthetic walls, we style your space smartly.",
     color: "text-amber-400",
-    path: "https://preview--intune-style-gen.lovable.app/",
+    path: "/style",
   },
   {
     icon: GalleryVertical,
